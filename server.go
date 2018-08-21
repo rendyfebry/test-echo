@@ -18,11 +18,8 @@ func userHandler(c echo.Context) error {
 func main() {
 	e := echo.New()
 
-	loggerConfig := middleware.LoggerConfig{
-		Format: "method=${method}, uri=${uri}, status=${status}\n",
-	}
-
-	e.Use(middleware.LoggerWithConfig(loggerConfig))
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	e.GET("/", homeHandler)
 	e.GET("/users", userHandler)
