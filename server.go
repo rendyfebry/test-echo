@@ -131,11 +131,14 @@ func main() {
 	e.GET("/", homeHandler)
 	e.POST("/login", loginHandler)
 
-	e.POST("/users", createUser)
-	e.GET("/users", getAllUser)
-	e.GET("/users/:id", getUser)
-	e.PUT("/users/:id", updateUser)
-	e.DELETE("/users/:id", deleteUser)
+	usr := e.Group("/users")
+	usr.Use(middleware.JWT([]byte("secret")))
+
+	usr.POST("", createUser)
+	usr.GET("", getAllUser)
+	usr.GET("/:id", getUser)
+	usr.PUT("/:id", updateUser)
+	usr.DELETE("/:id", deleteUser)
 
 	// Restricted group
 	r := e.Group("/restricted")
